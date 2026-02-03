@@ -7,7 +7,6 @@ import FormData from "form-data";
 const app = express();
 const upload = multer({ dest: "/tmp" });
 
-// 🔐 Use environment variables (RENDER BEST PRACTICE)
 const BOT_TOKEN = process.env.BOT_TOKEN;
 const CHAT_ID = process.env.CHAT_ID;
 
@@ -33,6 +32,5 @@ app.post("/upload", upload.single("file"), async (req, res) => {
   }
 });
 
-// Render provides PORT automatically
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Running on ${PORT}`));
