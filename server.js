@@ -10,9 +10,13 @@ const upload = multer({ dest: "/tmp" });
 const BOT_TOKEN = process.env.BOT_TOKEN;
 const CHAT_ID = process.env.CHAT_ID;
 
-app.post("/upload", upload.single("file"), async (req, res) => {
+app.post("/upload", upload.any(), async (req, res) => {
   try {
-    const filePath = req.file.path;
+    if (!req.files || req.files.length === 0) {
+      return res.status(400).send("No file received");
+    }
+
+    const filePath = req.files[0].path;
 
     const form = new FormData();
     form.append("chat_id", CHAT_ID);
@@ -31,6 +35,7 @@ app.post("/upload", upload.single("file"), async (req, res) => {
     res.status(500).send("FAILED");
   }
 });
+
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Running on ${PORT}`));
